@@ -110,3 +110,4 @@ C:\Users\caioh\source\WheelShareAPI\obj\Debug\net8.0\refint\WheelShareAPI.dll
 C:\Users\caioh\source\WheelShareAPI\obj\Debug\net8.0\WheelShareAPI.pdb
 C:\Users\caioh\source\WheelShareAPI\obj\Debug\net8.0\WheelShareAPI.genruntimeconfig.cache
 C:\Users\caioh\source\WheelShareAPI\obj\Debug\net8.0\ref\WheelShareAPI.dll
+C:\Users\caioh\source\WheelShareAPI\obj\Debug\net8.0\WheelShareAPI.sourcelink.json
