@@ -74,14 +74,14 @@ namespace EmprestimosAPI.Migrations
                     senha = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     data_nascimento = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     endereco = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    IdAssociacao = table.Column<int>(type: "integer", nullable: false)
+                    id_associacao = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Usuarios", x => x.id);
                     table.ForeignKey(
                         name: "FK_Usuarios_Associacoes_IdAssociacao",
-                        column: x => x.IdAssociacao,
+                        column: x => x.id_associacao,
                         principalTable: "Associacoes",
                         principalColumn: "id_associacao",
                         onDelete: ReferentialAction.Cascade);
