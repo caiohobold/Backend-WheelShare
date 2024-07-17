@@ -20,7 +20,7 @@ namespace EmprestimosAPI.Migrations
 
             migrationBuilder.AlterColumn<DateTime>(
             name: "data_emprestimo",
-            table: "Esuarios",
+            table: "Usuarios",
             type: "timestamp without time zone",
             nullable: false,
             oldClrType: typeof(DateTime),
