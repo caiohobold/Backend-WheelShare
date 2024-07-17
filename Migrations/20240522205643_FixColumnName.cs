@@ -15,12 +15,12 @@ namespace EmprestimosAPI.Migrations
             migrationBuilder.Sql("ALTER TABLE \"Equipamentos\" ALTER COLUMN status SET DEFAULT 'Disponível';");
 
             migrationBuilder.RenameColumn(
-                name: "IdAssociacao",
+                name: "id_associacao",
                 table: "Usuarios",
                 newName: "idassociacao");
 
             migrationBuilder.RenameColumn(
-                name: "IdAssociacao",
+                name: "id_associacao",
                 table: "Associacoes",
                 newName: "idassociacao");
 
