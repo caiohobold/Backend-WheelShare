@@ -16,7 +16,7 @@ namespace EmprestimosAPI.Migrations
                 name: "Associacoes",
                 columns: table => new
                 {
-                    id_associacao = table.Column<int>(type: "integer", nullable: false)
+                    IdAssociacao = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     emailprofissional = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     cnpj = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
@@ -28,7 +28,7 @@ namespace EmprestimosAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Associacoes", x => x.id_associacao);
+                    table.PrimaryKey("PK_Associacoes", x => x.IdAssociacao);
                 });
 
             migrationBuilder.CreateTable(
@@ -74,14 +74,14 @@ namespace EmprestimosAPI.Migrations
                     senha = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     data_nascimento = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     endereco = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    id_associacao = table.Column<int>(type: "integer", nullable: false)
+                    IdAssociacao = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Usuarios", x => x.id);
                     table.ForeignKey(
                         name: "FK_Usuarios_Associacoes_IdAssociacao",
-                        column: x => x.id_associacao,
+                        column: x => x.IdAssociacao,
                         principalTable: "Associacoes",
                         principalColumn: "id_associacao",
                         onDelete: ReferentialAction.Cascade);
