@@ -12,7 +12,7 @@ namespace EmprestimosAPI.Migrations
         {
             migrationBuilder.Sql(
                 @"ALTER TABLE ""Equipamentos"" 
-                  ALTER COLUMN estadp_equipamento 
+                  ALTER COLUMN estado_equipamento 
                   TYPE integer;"
             );
         }
