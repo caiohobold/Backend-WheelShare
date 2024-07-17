@@ -15,11 +15,11 @@ namespace EmprestimosAPI.Migrations
                  // ALTER COLUMN status DROP DEFAULT;"
            // );
 
-            migrationBuilder.Sql(
-                @"ALTER TABLE ""Equipamentos""
-                  ALTER COLUMN status
-                  TYPE integer;"
-            );
+            //migrationBuilder.Sql(
+               // @"ALTER TABLE ""Equipamentos""
+                //  ALTER COLUMN status
+                //  TYPE integer;"
+           // );
 
             migrationBuilder.Sql(
                 @"ALTER TABLE ""Equipamentos""

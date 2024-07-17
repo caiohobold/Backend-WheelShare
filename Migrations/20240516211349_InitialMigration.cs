@@ -97,7 +97,7 @@ namespace EmprestimosAPI.Migrations
                     IdCategoria = table.Column<int>(type: "integer", nullable: false),
                     estado_equipamento = table.Column<string>(type: "integer", nullable: false),
                     carga_equipamento = table.Column<string>(type: "integer", nullable: false),
-                    status = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
+                    status = table.Column<string>(type: "integer", nullable: false),
                     descricao_equipamento = table.Column<string>(type: "character varying(600)", maxLength: 600, nullable: false)
                 },
                 constraints: table =>
