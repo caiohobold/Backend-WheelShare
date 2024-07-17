@@ -34,7 +34,7 @@ ENV PATH="$PATH:/root/.dotnet/tools"
 RUN apt-get update && apt-get install -y postgresql-client
 
 # Definir a variável de ambiente para a string de conexão
-ENV CONNECTION_STRING="Host=viaduct.proxy.rlwy.net;Port=38657;Database=railway;Username=postgres;Password=SIivcczhfDBbQpyMBNfiJrXtbDsbYCJI;"
+ENV CONNECTION_STRING="Host=monorail.proxy.rlwy.net;Port=43262;Database=railway;Username=postgres;Password=HONFodckquNwgGCmudPMsRNAMrTTznfj;"
 
 # Executar migrações em sequência
 CMD sh -c "until pg_isready -h db -p 5432 -U postgres; do echo waiting for postgres; sleep 2; done;"
