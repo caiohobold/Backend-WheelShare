@@ -95,8 +95,8 @@ namespace EmprestimosAPI.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     nome_equipamento = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     IdCategoria = table.Column<int>(type: "integer", nullable: false),
-                    estado_equipamento = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
-                    carga_equipamento = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
+                    estado_equipamento = table.Column<string>(type: "integer", nullable: false),
+                    carga_equipamento = table.Column<string>(type: "integer", nullable: false),
                     status = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
                     descricao_equipamento = table.Column<string>(type: "character varying(600)", maxLength: 600, nullable: false)
                 },

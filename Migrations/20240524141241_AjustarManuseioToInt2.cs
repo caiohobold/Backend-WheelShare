@@ -10,25 +10,25 @@ namespace EmprestimosAPI.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql(
-                @"ALTER TABLE ""Equipamentos"" 
-                  ALTER COLUMN carga_equipamento 
-                  TYPE integer;"
-            );
+            //migrationBuilder.Sql(
+               // @"ALTER TABLE ""Equipamentos"" 
+               //   ALTER COLUMN carga_equipamento 
+                //  TYPE integer;"
+            //);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<string>(
-                name: "carga_equipamento",
-                table: "Equipamentos",
-                type: "character varying(20)",
-                maxLength: 20,
-                nullable: false,
-                oldClrType: typeof(int),
-                oldType: "integer",
-                oldMaxLength: 20);
+            //migrationBuilder.AlterColumn<string>(
+               // name: "carga_equipamento",
+              //  table: "Equipamentos",
+             //   type: "character varying(20)",
+             //   maxLength: 20,
+             //   nullable: false,
+              //  oldClrType: typeof(int),
+              //  oldType: "integer",
+             //   oldMaxLength: 20);
         }
     }
 }
