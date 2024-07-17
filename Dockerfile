@@ -34,7 +34,7 @@ ENV PATH="$PATH:/root/.dotnet/tools"
 RUN apt-get update && apt-get install -y postgresql-client
 
 # Definir a variável de ambiente para a string de conexão
-ENV CONNECTION_STRING="Host=monorail.proxy.rlwy.net;Port=33167;Database=railway;Username=postgres;Password=ioruzfbSCcRGpvxGdUvlbRpzuprnlsrR;"
+ENV CONNECTION_STRING="Host=monorail.proxy.rlwy.net;Port=43262;Database=railway;Username=postgres;Password=HONFodckquNwgGCmudPMsRNAMrTTznfj;"
 
 CMD sh -c "dotnet ef database update --project WheelShareAPI.csproj && dotnet WheelShareAPI.dll"
 
