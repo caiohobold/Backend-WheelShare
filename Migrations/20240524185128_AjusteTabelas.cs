@@ -44,10 +44,10 @@ namespace EmprestimosAPI.Migrations
                 table: "Equipamentos",
                 column: "status_equipamento");
 
-            migrationBuilder.DropForeignKey(
-                name: "FK_Equipamentos_Emprestimos_status",
-                table: "Equipamentos");
-        }
+            //migrationBuilder.DropForeignKey(
+               // name: "FK_Equipamentos_Emprestimos_status",
+                //table: "Equipamentos");
+      //  }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
