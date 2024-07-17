@@ -30,7 +30,7 @@ namespace EmprestimosAPI.Migrations
                     b.Property<int>("IdAssociacao")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasColumnName("id_associacao");
+                        .HasColumnName("IdAssociacao");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdAssociacao"));
 

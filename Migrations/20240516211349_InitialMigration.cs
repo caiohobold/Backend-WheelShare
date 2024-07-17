@@ -83,7 +83,7 @@ namespace EmprestimosAPI.Migrations
                         name: "FK_Usuarios_Associacoes_IdAssociacao",
                         column: x => x.IdAssociacao,
                         principalTable: "Associacoes",
-                        principalColumn: "id_associacao",
+                        principalColumn: "IdAssociacao",
                         onDelete: ReferentialAction.Cascade);
                 });
 

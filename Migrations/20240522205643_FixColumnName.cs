@@ -70,7 +70,7 @@ namespace EmprestimosAPI.Migrations
             migrationBuilder.RenameColumn(
                 name: "idassociacao",
                 table: "Associacoes",
-                newName: "id_associacao");
+                newName: "IdAssociacao");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Usuarios_IdAssociacao",
@@ -95,7 +95,7 @@ namespace EmprestimosAPI.Migrations
                 table: "Usuarios",
                 column: "IdAssociacao",
                 principalTable: "Associacoes",
-                principalColumn: "id_associacao",
+                principalColumn: "IdAssociacao",
                 onDelete: ReferentialAction.Cascade);
 
 
