@@ -46,7 +46,7 @@ namespace EmprestimosAPI.Controller
             return Ok(associacao);
         }
 
-        [Authorize]
+
         [HttpPost("register")]
         public async Task<ActionResult<UserToken>> Post(AssociacaoCreateDTO associacaoDTO)
         {

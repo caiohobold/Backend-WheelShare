@@ -62,7 +62,7 @@ namespace EmprestimosAPI
 
             var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
             builder.Services.AddDbContext<DbEmprestimosContext>(options =>
-                options.UseNpgsql(connectionString));
+                options.UseNpgsql(builder.Configuration.GetConnectionString("DbEmprestimosContext")));
 
             builder.Services.AddAuthentication(options =>
             {

@@ -24,8 +24,6 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS runtime
 WORKDIR /app
 COPY --from=build /app/publish .
 COPY --from=build /app/WheelShareAPI.csproj .
-
-# Copiar a ferramenta dotnet-ef para a imagem final
 COPY --from=build /root/.dotnet /root/.dotnet
 
 # Adicionar .dotnet/tools ao PATH na imagem final
