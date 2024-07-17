@@ -40,9 +40,9 @@ namespace EmprestimosAPI.Migrations
                 defaultValue: 0);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Equipamentos_status",
+                name: "IX_Equipamentos_status_equipamento",
                 table: "Equipamentos",
-                column: "status");
+                column: "status_equipamento");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_Equipamentos_Emprestimos_status",
