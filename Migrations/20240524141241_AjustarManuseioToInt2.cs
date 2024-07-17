@@ -13,14 +13,7 @@ namespace EmprestimosAPI.Migrations
             migrationBuilder.Sql(
                 @"ALTER TABLE ""Equipamentos"" 
                   ALTER COLUMN carga_equipamento 
-                  TYPE integer 
-                  USING 
-                  CASE 
-                    WHEN carga_equipamento = 'Até 80kg' THEN 1 
-                    WHEN carga_equipamento = 'Até 120kg' THEN 2 
-                    WHEN carga_equipamento = 'Até ' THEN 3 
-                    ELSE NULL 
-                  END;"
+                  TYPE integer;"
             );
         }
 

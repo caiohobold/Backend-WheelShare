@@ -13,7 +13,7 @@ namespace EmprestimosAPI.Migrations
             migrationBuilder.AlterColumn<string>(
                 name: "estado_equipamento",
                 table: "Equipamentos",
-                type: "estado_equipamento",
+                type: "integer",
                 maxLength: 10,
                 nullable: false,
                 oldClrType: typeof(string),
@@ -31,7 +31,7 @@ namespace EmprestimosAPI.Migrations
                 maxLength: 10,
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "estado_equipamento",
+                oldType: "integer",
                 oldMaxLength: 10);
         }
     }

@@ -10,21 +10,15 @@ namespace EmprestimosAPI.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql(
-                @"ALTER TABLE ""Equipamentos""
-                  ALTER COLUMN status DROP DEFAULT;"
-            );
+            //migrationBuilder.Sql(
+                //@"ALTER TABLE ""Equipamentos""
+                 // ALTER COLUMN status DROP DEFAULT;"
+           // );
 
             migrationBuilder.Sql(
                 @"ALTER TABLE ""Equipamentos""
                   ALTER COLUMN status
-                  TYPE integer 
-                  USING 
-                  CASE 
-                    WHEN status = 'Disponível' THEN 1 
-                    WHEN status = 'Em uso' THEN 2 
-                    ELSE NULL 
-                  END;"
+                  TYPE integer;"
             );
 
             migrationBuilder.Sql(
