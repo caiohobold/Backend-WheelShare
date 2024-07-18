@@ -94,7 +94,7 @@ namespace EmprestimosAPI.Migrations
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     nome_equipamento = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    IdCategoria = table.Column<int>(type: "integer", nullable: false),
+                    id_categoria = table.Column<int>(type: "integer", nullable: false),
                     estado_equipamento = table.Column<string>(type: "integer", nullable: false),
                     carga_equipamento = table.Column<string>(type: "integer", nullable: false),
                     status = table.Column<string>(type: "integer", nullable: false),
@@ -104,8 +104,8 @@ namespace EmprestimosAPI.Migrations
                 {
                     table.PrimaryKey("PK_Equipamentos", x => x.id);
                     table.ForeignKey(
-                        name: "FK_Equipamentos_Categorias_IdCategoria",
-                        column: x => x.IdCategoria,
+                        name: "FK_Equipamentos_Categorias_id_categoria",
+                        column: x => x.id_categoria,
                         principalTable: "Categorias",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
@@ -161,9 +161,9 @@ namespace EmprestimosAPI.Migrations
                 column: "IdUsuario");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Equipamentos_IdCategoria",
+                name: "IX_Equipamentos_id_categoria",
                 table: "Equipamentos",
-                column: "IdCategoria");
+                column: "id_categoria");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Usuarios_idassociacao",
