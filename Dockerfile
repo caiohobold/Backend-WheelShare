@@ -23,7 +23,7 @@ RUN dotnet publish "WheelShareAPI.csproj" -c Release -o /app/publish
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS runtime
 WORKDIR /app
 COPY --from=build /app .
-# COPY --from=build /app/publish .
+COPY --from=build /app/publish .
 # COPY --from=build /app/WheelShareAPI.csproj .
 COPY --from=build /root/.dotnet /root/.dotnet
 
@@ -34,7 +34,7 @@ ENV PATH="$PATH:/root/.dotnet/tools"
 RUN apt-get update && apt-get install -y postgresql-client
 
 # Definir a variável de ambiente para a string de conexão
-ENV CONNECTION_STRING="Host=monorail.proxy.rlwy.net;Port=47220;Database=railway;Username=postgres;Password=LllJhrCpSoWqfYLCGcjHtFYJpyETwzXJ;"
+ENV CONNECTION_STRING="Host=viaduct.proxy.rlwy.net;Port=56731;Database=railway;Username=postgres;Password=sTDxGUShNJYmdmZpjKXBxcCvifBDEIAh;"
 
 CMD sh -c "dotnet ef database update --project WheelShareAPI.csproj && dotnet WheelShareAPI.dll"
 
