@@ -10,13 +10,13 @@ namespace EmprestimosAPI.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            //migrationBuilder.DropIndex(
-              //  name: "IX_Equipamentos_status",
-               // table: "Equipamentos");
+            migrationBuilder.DropIndex(
+              name: "IX_Equipamentos_status_equipamento",
+                table: "Equipamentos");
 
-            //migrationBuilder.DropColumn(
-              //  name: "status",
-               // table: "Equipamentos");
+            migrationBuilder.DropColumn(
+              name: "status_equipamento",
+               table: "Equipamentos");
         }
 
         /// <inheritdoc />
