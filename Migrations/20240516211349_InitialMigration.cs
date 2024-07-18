@@ -166,9 +166,9 @@ namespace EmprestimosAPI.Migrations
                 column: "IdCategoria");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Usuarios_IdAssociacao",
+                name: "IX_Usuarios_idassociacao",
                 table: "Usuarios",
-                column: "IdAssociacao");
+                column: "idassociacao");
         }
 
         /// <inheritdoc />
