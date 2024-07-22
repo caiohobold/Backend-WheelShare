@@ -1,0 +1,34 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out the repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build the project
+      run: npm run build
+
+    - name: Deploy to production
+      run: |
+        echo "Deploying to production server"
+        # Exemplo de comando de deploy
+        # deploy_command --db-connection-string ${{ secrets.CONNECTION_STRING }} --api-url ${{ secrets.REACT_APP_API_URL }}
+      env:
+        CONNECTION_STRING: ${{ secrets.CONNECTION_STRING }}
+        REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
