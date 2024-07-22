@@ -46,10 +46,20 @@ namespace EmprestimosAPI
             builder.Services.AddScoped<IAuthenticate, AuthenticateService>();
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("AllowSpecificOrigin",
+                if (builder.Environment.IsDevelopment())
+                {
+                    options.AddPolicy("AllowSpecificOrigin",
+                    builder => builder.WithOrigins("https://wheelshare.up.railway.app", "http://localhost:3000")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod());
+                }
+                else
+                {
+                    options.AddPolicy("AllowSpecificOrigin",
                     builder => builder.WithOrigins("https://wheelshare.up.railway.app")
                     .AllowAnyHeader()
                     .AllowAnyMethod());
+                }
             });
 
             builder.Services.AddControllers();
