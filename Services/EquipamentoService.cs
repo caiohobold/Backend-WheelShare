@@ -33,7 +33,6 @@ namespace EmprestimosAPI.Services
                 CargaEquipamento = e.CargaEquipamento,
                 DescricaoEquipamento = e.DescricaoEquipamento,
                 Foto1 = e.Foto1,
-                Foto2 = e.Foto2,
                 StatusEquipamento = e.StatusEquipamento,
                 IdLocal = e.IdLocal,
                 NomeLocal = e.NomeLocal,
@@ -55,8 +54,6 @@ namespace EmprestimosAPI.Services
                 CargaEquipamento = e.CargaEquipamento,
                 DescricaoEquipamento = e.DescricaoEquipamento,
                 IdLocal = e.IdLocal,
-                Foto1 = e.Foto1 != null ? Convert.ToBase64String(e.Foto1) : null,
-                Foto2 = e.Foto2 != null ? Convert.ToBase64String(e.Foto2) : null,
                 idAssociacao = e.IdAssociacao
             }).ToList();
         }

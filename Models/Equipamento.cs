@@ -42,7 +42,7 @@ namespace EmprestimosAPI.Models
 
         [StringLength(600)]
         [Column("descricao_equipamento")]
-        public string DescricaoEquipamento { get; set; }
+        public string? DescricaoEquipamento { get; set; }
 
         [Column("foto1_equipamento")]
         public byte[]? Foto1 { get; set; }

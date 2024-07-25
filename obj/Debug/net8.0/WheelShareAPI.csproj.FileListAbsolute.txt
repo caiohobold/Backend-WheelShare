@@ -111,3 +111,4 @@ C:\Users\caioh\source\WheelShareAPI\obj\Debug\net8.0\WheelShareAPI.pdb
 C:\Users\caioh\source\WheelShareAPI\obj\Debug\net8.0\WheelShareAPI.genruntimeconfig.cache
 C:\Users\caioh\source\WheelShareAPI\obj\Debug\net8.0\ref\WheelShareAPI.dll
 C:\Users\caioh\source\WheelShareAPI\obj\Debug\net8.0\WheelShareAPI.sourcelink.json
+C:\Users\caioh\source\WheelShareAPI\bin\Debug\net8.0\appsettings.Production.json
