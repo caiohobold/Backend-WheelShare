@@ -81,7 +81,18 @@ namespace EmprestimosAPI.Repositories
                 .Include(e => e.Pessoa)
                 .Include(e => e.Equipamento)
                 .Include(e => e.Usuario)
-                .Where(e => e.Status == 0 && e.DataDevolucaoEmprestimo == today && e.IdAssociacao == idAssociacao)
+                .Where(e => e.Status == 0 && e.DataDevolucaoEmprestimo <= today && e.IdAssociacao == idAssociacao)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Emprestimo>> GetEmpAgendado(int idAssociacao)
+        {
+            var today = DateTime.UtcNow.Date;
+            return await _context.Emprestimos
+                .Include(e => e.Pessoa)
+                .Include(e => e.Equipamento)
+                .Include(e => e.Usuario)
+                .Where(e => e.Status == 0 && e.DataEmprestimo > today && e.IdAssociacao == idAssociacao)
                 .ToListAsync();
         }
 

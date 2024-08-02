@@ -128,6 +128,26 @@ namespace EmprestimosAPI.Services
             }).ToList();
         }
 
+        public async Task<IEnumerable<EmprestimoReadDTO>> GetEmpAgendado(int idAssociacao)
+        {
+            var emprestimos = await _emprestimoRepository.GetEmpAgendado(idAssociacao);
+            return emprestimos.Select(e => new EmprestimoReadDTO
+            {
+                Id = e.Id,
+                IdPessoa = e.Pessoa.IdPessoa,
+                nomePessoa = e.Pessoa.NomeCompleto,
+                telefonePessoa = e.Pessoa.Telefone,
+                IdEquipamento = e.Equipamento.IdEquipamento,
+                nomeEquipamento = e.Equipamento.NomeEquipamento,
+                cargaEquipamento = e.Equipamento.CargaEquipamento,
+                DataEmprestimo = e.DataEmprestimo,
+                DataDevolucao = e.DataDevolucaoEmprestimo,
+                IdUsuario = e.Usuario.IdUsuario,
+                Status = e.Status,
+                idAssociacao = e.IdAssociacao
+            }).ToList();
+        }
+
 
         public async Task<EmprestimoReadDTO> AddEmp(EmprestimoCreateDTO emprestimoDTO, int idAssociacao)
         {

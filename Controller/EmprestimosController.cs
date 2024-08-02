@@ -88,6 +88,15 @@ namespace EmprestimosAPI.Controller
             return Ok(emprestimos);
         }
 
+        [Authorize]
+        [HttpGet("agendados")]
+        public async Task<ActionResult<IEnumerable<EmprestimoReadDTO>>> GetEmprestimosAgendados()
+        {
+            int idAssociacao = GetAssociacaoId();
+            var emprestimos = await _emprestimoService.GetEmpAgendado(idAssociacao);
+            return Ok(emprestimos);
+        }
+
 
         [Authorize]
         [HttpPost]
