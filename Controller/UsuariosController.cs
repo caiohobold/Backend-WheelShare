@@ -1,6 +1,7 @@
 ﻿using EmprestimosAPI.DTO.Usuario;
 using EmprestimosAPI.Interfaces.Account;
 using EmprestimosAPI.Interfaces.Services;
+using EmprestimosAPI.Interfaces.ServicesInterfaces;
 using EmprestimosAPI.Models;
 using EmprestimosAPI.Token;
 using Microsoft.AspNetCore.Authorization;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System.Security.Claims;
+using WheelShareAPI.DTO.Usuario;
 
 namespace EmprestimosAPI.Controller
 {
@@ -18,11 +20,13 @@ namespace EmprestimosAPI.Controller
     {
         private readonly IUsuarioService _usuarioService;
         private readonly IAuthenticate _authenticateService;
+        private readonly IEmailService _emailService;
 
-        public UsuariosController(IUsuarioService usuarioService, IAuthenticate authenticateService)
+        public UsuariosController(IUsuarioService usuarioService, IAuthenticate authenticateService, IEmailService emailService)
         {
             _usuarioService = usuarioService;
             _authenticateService = authenticateService;
+            _emailService = emailService;
         }
 
         [HttpGet]
@@ -218,6 +222,23 @@ namespace EmprestimosAPI.Controller
             int idAssociacao = int.Parse(idAssociacaoClaim.Value);
             await _usuarioService.ChangeUserPassword(id, changePasswordDTO.NovaSenha, idAssociacao);
             return NoContent();
+        }
+
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDTO forgotPasswordDTO)
+        {
+            if (string.IsNullOrEmpty(forgotPasswordDTO.Email))
+            {
+                return BadRequest("Email is required.");
+            }
+
+            var result = await _usuarioService.ResetPasswordAsync(forgotPasswordDTO.Email);
+            if (!result)
+            {
+                return NotFound("O e-mail informado não está vinculado a nenhuma conta.");
+            }
+
+            return Ok("Uma nova senha foi encaminhada para o seu e-mail!");
         }
     }
 }

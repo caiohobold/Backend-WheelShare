@@ -8,6 +8,8 @@ using EmprestimosAPI.Interfaces.RepositoriesInterfaces;
 using EmprestimosAPI.DTO.Usuario;
 using Microsoft.EntityFrameworkCore;
 using EmprestimosAPI.Data;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using EmprestimosAPI.Interfaces.ServicesInterfaces;
 
 namespace EmprestimosAPI.Services
 {
@@ -16,12 +18,14 @@ namespace EmprestimosAPI.Services
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly DbEmprestimosContext _context;
         private readonly HashingService _hashingService;
+        private readonly IEmailService _emailService;
 
-        public UsuarioService(IUsuarioRepository usuarioRepository, DbEmprestimosContext context, HashingService hashingService)
+        public UsuarioService(IUsuarioRepository usuarioRepository, DbEmprestimosContext context, HashingService hashingService, IEmailService emailService)
         {
             _usuarioRepository = usuarioRepository;
             _context = context;
             _hashingService = hashingService;
+            _emailService = emailService;
         }
 
         public async Task<IEnumerable<UsuarioReadDTO>> GetAllUsers(int pageNumber, int pageSize, int idAssociacao)
@@ -89,8 +93,8 @@ namespace EmprestimosAPI.Services
                 NumeroTelefone = newUsuario.NumeroTelefone,
                 EmailPessoal = newUsuario.EmailPessoal,
                 SenhaHash = newUsuario.SenhaHash,
-                AssociacaoNomeFantasia = newUsuario.Associacao?.NomeFantasia ?? "Desconhecida",
-                IdAssociacao = newUsuario.Associacao?.IdAssociacao ?? 0
+                AssociacaoNomeFantasia = newUsuario.Associacao.NomeFantasia,
+                IdAssociacao = newUsuario.Associacao.IdAssociacao
             };
         }
 
@@ -131,6 +135,48 @@ namespace EmprestimosAPI.Services
                 user.SenhaHash = _hashingService.HashPassword(user, newPassword);
                 await _usuarioRepository.UpdateUser(user, idAssociacao);
             }
+        }
+
+        public async Task<bool> ResetPasswordAsync(string email)
+        {
+            var user = await _usuarioRepository.GetUserByEmailNoAssocAsync(email);
+            if(user == null)
+            {
+                return false;
+            }
+
+            var newPassword = GenerateRandomPassword();
+            user.SenhaHash = _hashingService.HashPassword(user, newPassword);
+
+            await _usuarioRepository.UpdateUser(user, user.IdAssociacao);
+
+            await _emailService.SendResetPasswordEmailAsync(user.EmailPessoal, newPassword);
+
+            return true;
+
+
+        }
+
+        private string GenerateRandomPassword(int length = 8)
+        {
+            const string upperChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const string lowerChars = "abcdefghijklmnopqrstuvwxyz";
+            const string digitChars = "0123456789";
+
+            var random = new Random();
+            var chars = new List<char>();
+            chars.Add(upperChars[random.Next(upperChars.Length)]);
+            chars.Add(lowerChars[random.Next(lowerChars.Length)]);
+            chars.Add(digitChars[random.Next(digitChars.Length)]);
+
+            for (int i = chars.Count; i < length; i++)
+            {
+                var allChars = upperChars + lowerChars + digitChars;
+                chars.Add(allChars[random.Next(allChars.Length)]);
+            }
+
+            // Embaralhar a senha para garantir que a sequência dos caracteres não siga um padrão fixo
+            return new string(chars.OrderBy(c => random.Next()).ToArray());
         }
     }
 }

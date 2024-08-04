@@ -71,6 +71,13 @@ namespace EmprestimosAPI.Repositories
                 .FirstOrDefaultAsync();
         }
 
+        public async Task<Usuario> GetUserByEmailNoAssocAsync(string email)
+        {
+            return await _context.Usuarios
+                .Where(u => u.EmailPessoal == email)
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<Usuario> AddUser(UsuarioCreateDTO usuarioDTO)
         {
             var usuario = new Usuario

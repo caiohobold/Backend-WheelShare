@@ -15,6 +15,7 @@ using EmprestimosAPI.Interfaces.Account;
 using EmprestimosAPI.Token;
 using EmprestimosAPI.Helpers;
 using Microsoft.AspNetCore.Hosting;
+using WheelShareAPI.Helpers;
 
 namespace EmprestimosAPI
 {
@@ -22,116 +23,138 @@ namespace EmprestimosAPI
     {
         public static void Main(string[] args)
         {
-            var builder = WebApplication.CreateBuilder(args);
-
-            // Add services to the container.
-
-            builder.Services.AddScoped<IAssociacaoRepository, AssociacaoRepository>();
-            builder.Services.AddScoped<IAssociacaoService, AssociacaoService>();
-            builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-            builder.Services.AddScoped<IUsuarioService, UsuarioService>();
-            builder.Services.AddScoped<IPessoaRepository, PessoaRepository>();
-            builder.Services.AddScoped<IPessoaService, PessoaService>();
-            builder.Services.AddScoped<ILocalRepository, LocalRepository>();
-            builder.Services.AddScoped<ILocalService, LocalService>();
-            builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
-            builder.Services.AddScoped<ICategoriaService, CategoriaService>();
-            builder.Services.AddScoped<IEquipamentoRepository, EquipamentoRepository>();
-            builder.Services.AddScoped<IEquipamentoService, EquipamentoService>();
-            builder.Services.AddScoped<IEmprestimoRepository, EmprestimoRepository>();
-            builder.Services.AddScoped<IEmprestimoService, EmprestimoService>();
-            builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
-            builder.Services.AddScoped<IFeedbackService,  FeedbackService>();
-            builder.Services.AddScoped<HashingService>();
-            builder.Services.AddScoped<IAuthenticate, AuthenticateService>();
-            builder.Services.AddCors(options =>
+            try
             {
-                if (builder.Environment.IsDevelopment())
+                var builder = WebApplication.CreateBuilder(args);
+
+                // Add services to the container.
+
+                builder.Services.AddScoped<IAssociacaoRepository, AssociacaoRepository>();
+                builder.Services.AddScoped<IAssociacaoService, AssociacaoService>();
+                builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+                builder.Services.AddScoped<IEmailService, EmailService>();
+                builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+                builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+                builder.Services.AddScoped<IPessoaRepository, PessoaRepository>();
+                builder.Services.AddScoped<IPessoaService, PessoaService>();
+                builder.Services.AddScoped<ILocalRepository, LocalRepository>();
+                builder.Services.AddScoped<ILocalService, LocalService>();
+                builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
+                builder.Services.AddScoped<ICategoriaService, CategoriaService>();
+                builder.Services.AddScoped<IEquipamentoRepository, EquipamentoRepository>();
+                builder.Services.AddScoped<IEquipamentoService, EquipamentoService>();
+                builder.Services.AddScoped<IEmprestimoRepository, EmprestimoRepository>();
+                builder.Services.AddScoped<IEmprestimoService, EmprestimoService>();
+                builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
+                builder.Services.AddScoped<IFeedbackService, FeedbackService>();
+                builder.Services.AddScoped<HashingService>();
+                builder.Services.AddScoped<IAuthenticate, AuthenticateService>();
+                builder.Services.AddCors(options =>
                 {
-                    options.AddPolicy("AllowSpecificOrigin",
-                    builder => builder.WithOrigins("https://wheelshare.up.railway.app", "http://localhost:3000")
-                    .AllowAnyHeader()
-                    .AllowAnyMethod());
+                    if (builder.Environment.IsDevelopment())
+                    {
+                        options.AddPolicy("AllowSpecificOrigin",
+                        builder => builder.WithOrigins("https://wheelshare.up.railway.app", "http://localhost:3000")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod());
+                    }
+                    else
+                    {
+                        options.AddPolicy("AllowSpecificOrigin",
+                        builder => builder.WithOrigins("https://wheelshare.up.railway.app")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod());
+                    }
+                });
+
+                builder.Services.AddControllers();
+
+                builder.Services.AddEndpointsApiExplorer();
+                builder.Services.AddInfrastructureSwagger();
+
+                builder.Logging.ClearProviders();
+                builder.Logging.AddConsole();
+
+                var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING")
+                    ?? builder.Configuration.GetConnectionString("DefaultConnection");
+                builder.Services.AddDbContext<DbEmprestimosContext>(options =>
+                    options.UseNpgsql(connectionString));
+
+                builder.Services.AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                }
+                ).AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+
+                        ValidIssuer = builder.Configuration["jwt:issuer"],
+                        ValidAudience = builder.Configuration["jwt:audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                            Encoding.UTF8.GetBytes(builder.Configuration["jwt:secretKey"])),
+                        ClockSkew = TimeSpan.Zero
+                    };
+                }
+                );
+
+                builder.Services.AddAuthorization(options =>
+                {
+                    options.AddPolicy("AssociacaoPolicy", policy => policy.RequireRole("Associacao"));
+                    options.AddPolicy("UsuarioPolicy", policy => policy.RequireRole("Usuario"));
+                });
+
+
+                var app = builder.Build();
+
+                if (app.Environment.IsDevelopment())
+                {
+                    app.UseSwagger();
+                    app.UseSwaggerUI();
+                    app.UseDeveloperExceptionPage();
                 }
                 else
                 {
-                    options.AddPolicy("AllowSpecificOrigin",
-                    builder => builder.WithOrigins("https://wheelshare.up.railway.app")
-                    .AllowAnyHeader()
-                    .AllowAnyMethod());
+                    app.UseExceptionHandler("/Home/Error");
+                    app.UseHsts();
                 }
-            });
 
-            builder.Services.AddControllers();
+                app.UseHttpsRedirection();
+                app.UseStaticFiles();
 
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddInfrastructureSwagger();
+                app.UseRouting();
 
-            builder.Logging.ClearProviders();
-            builder.Logging.AddConsole();
+                app.UseCors("AllowSpecificOrigin");
+                app.UseAuthentication();
+                app.UseAuthorization();
 
-            var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING")
-                ?? builder.Configuration.GetConnectionString("DefaultConnection");
-            builder.Services.AddDbContext<DbEmprestimosContext>(options =>
-                options.UseNpgsql(connectionString));
 
-            builder.Services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                app.MapControllers();
+
+                app.Run();
             }
-            ).AddJwtBearer(options =>
+            catch (Exception ex)
             {
-                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                Console.WriteLine("Exception occurred: " + ex.Message);
+                Console.WriteLine("Stack Trace: " + ex.StackTrace);
+
+                if (ex is AggregateException aggEx)
                 {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
+                    foreach (var innerEx in aggEx.InnerExceptions)
+                    {
+                        Console.WriteLine("Inner Exception: " + innerEx.Message);
+                        Console.WriteLine("Inner Exception Stack Trace: " + innerEx.StackTrace);
+                    }
+                }
 
-                    ValidIssuer = builder.Configuration["jwt:issuer"],
-                    ValidAudience = builder.Configuration["jwt:audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(
-                        Encoding.UTF8.GetBytes(builder.Configuration["jwt:secretKey"])),
-                    ClockSkew = TimeSpan.Zero
-                };
-            }
-            );
-
-            builder.Services.AddAuthorization(options =>
-            {
-                options.AddPolicy("AssociacaoPolicy", policy => policy.RequireRole("Associacao"));
-                options.AddPolicy("UsuarioPolicy", policy => policy.RequireRole("Usuario"));
-            });
-
-
-            var app = builder.Build();
-
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-                app.UseHsts();
+                throw;
             }
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-
-            app.UseRouting();
-
-            app.UseCors("AllowSpecificOrigin");
-            app.UseAuthentication();
-            app.UseAuthorization();
-
-
-            app.MapControllers();
-
-            app.Run();
         }
     }
 }

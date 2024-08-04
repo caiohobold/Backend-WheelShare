@@ -112,3 +112,7 @@ C:\Users\caioh\source\WheelShareAPI\obj\Debug\net8.0\WheelShareAPI.genruntimecon
 C:\Users\caioh\source\WheelShareAPI\obj\Debug\net8.0\ref\WheelShareAPI.dll
 C:\Users\caioh\source\WheelShareAPI\obj\Debug\net8.0\WheelShareAPI.sourcelink.json
 C:\Users\caioh\source\WheelShareAPI\bin\Debug\net8.0\appsettings.Production.json
+C:\Users\caioh\source\WheelShareAPI\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
+C:\Users\caioh\source\WheelShareAPI\bin\Debug\net8.0\MailKit.dll
+C:\Users\caioh\source\WheelShareAPI\bin\Debug\net8.0\MimeKit.dll
+C:\Users\caioh\source\WheelShareAPI\bin\Debug\net8.0\System.Formats.Asn1.dll

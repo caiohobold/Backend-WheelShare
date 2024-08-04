@@ -1,30 +1,48 @@
 ﻿using EmprestimosAPI.Interfaces.ServicesInterfaces;
-using System.Net.Mail;
+using MimeKit;
+using MailKit.Net.Smtp;
+using MailKit.Security;
+using WheelShareAPI.Helpers;
+using Microsoft.Extensions.Options;
 
 namespace EmprestimosAPI.Services
 {
     public class EmailService : IEmailService
     {
-        private readonly SmtpClient _smtpClient;
+        private readonly EmailSettings _emailSettings;
 
-        public EmailService(SmtpClient smtpClient)
+        public EmailService(IOptions<EmailSettings> emailSettings)
         {
-            _smtpClient = smtpClient;
+            _emailSettings = emailSettings.Value;
         }
-
-        public async Task SendPasswordResetEmail(string toEmail, string token)
+        public async Task SendResetPasswordEmailAsync(string email, string newPassword)
         {
-            var mailMessage = new MailMessage
+
+            var domain = email.Split('@').Last();
+            if (!_emailSettings.Providers.ContainsKey(domain))
             {
-                From = new MailAddress("caio.hobold@nextfit.com.br"),
-                Subject = "Redefinição de Senha",
-                Body = $"Por favor, utilize o seguinte token para redefinir sua senha: {token}",
-                IsBodyHtml = true,
+                domain = _emailSettings.DefaultProvider; // Usa o provedor padrão se não encontrar um específico
+            }
+
+            var providerSettings = _emailSettings.Providers[domain];
+
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress(providerSettings.SenderName, providerSettings.SenderEmail));
+            message.To.Add(new MailboxAddress("", email));
+            message.Subject = "Redefinição de Senha";
+            message.Body = new TextPart("plain")
+            {
+                Text = $"Sua nova senha é: {newPassword}"
             };
 
-            mailMessage.To.Add(toEmail);
+            using (var client = new SmtpClient())
+            {
+                await client.ConnectAsync(providerSettings.SmtpServer, providerSettings.SmtpPort, SecureSocketOptions.StartTls);
+                await client.AuthenticateAsync(providerSettings.SenderEmail, providerSettings.SenderPassword);
+                await client.SendAsync(message);
+                await client.DisconnectAsync(true);
+            }
 
-            await _smtpClient.SendMailAsync(mailMessage);
         }
     }
 }
