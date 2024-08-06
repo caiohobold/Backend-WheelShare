@@ -54,6 +54,9 @@ namespace EmprestimosAPI.Services
             return new UsuarioReadDTO
             {
                 IdUsuario = usuario.IdUsuario,
+                Endereco = usuario.Endereco,
+                Cpf = usuario.Cpf,
+                DataNascimento = usuario.DataNascimento,
                 NomeCompleto = usuario.NomeCompleto,
                 EmailPessoal = usuario.EmailPessoal,
                 NumeroTelefone = usuario.NumeroTelefone,

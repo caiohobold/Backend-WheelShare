@@ -27,6 +27,14 @@ namespace EmprestimosAPI.Repositories
             return await _context.Associacoes.FindAsync(id);
         }
 
+        public async Task<Associacao> GetAssocByEmailAsync(string email)
+        {
+            return await _context.Associacoes
+                .Where(u => u.EmailProfissional == email)
+                .FirstOrDefaultAsync();
+        }
+
+
         public async Task<Associacao> AddAssoc(Associacao associacao)
         {
             _context.Associacoes.Add(associacao);

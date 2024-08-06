@@ -4,12 +4,14 @@ using EmprestimosAPI.Interfaces.Account;
 using EmprestimosAPI.Interfaces.RepositoriesInterfaces;
 using EmprestimosAPI.Interfaces.Services;
 using EmprestimosAPI.Models;
+using EmprestimosAPI.Services;
 using EmprestimosAPI.Token;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
+using WheelShareAPI.DTO.Usuario;
 
 namespace EmprestimosAPI.Controller
 {
@@ -161,6 +163,23 @@ namespace EmprestimosAPI.Controller
 
             await _service.ChangeAssocPassword(id, changePasswordDTO.NovaSenha);
             return Ok();
+        }
+
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDTO forgotPasswordDTO)
+        {
+            if (string.IsNullOrEmpty(forgotPasswordDTO.Email))
+            {
+                return BadRequest("Email is required.");
+            }
+
+            var result = await _service.ResetPasswordAsync(forgotPasswordDTO.Email);
+            if (!result)
+            {
+                return NotFound("O e-mail informado não está vinculado a nenhuma conta.");
+            }
+
+            return Ok("Uma nova senha foi encaminhada para o seu e-mail!");
         }
 
     }

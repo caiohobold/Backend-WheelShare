@@ -8,6 +8,7 @@ namespace EmprestimosAPI.Interfaces.Services
     {
         Task<IEnumerable<AssociacaoReadDTO>> GetAllAsync(int pageNumber, int pageSize);
         Task<AssociacaoReadDTO> GetByIdAsync(int id);
+        Task<bool> ResetPasswordAsync(string email);
         Task<AssociacaoReadDTO> CreateAsync(AssociacaoCreateDTO associacaoDto);
         Task UpdateAsync(int id, AssociacaoUpdateDTO associacaoDto);
         Task DeleteAsync(int id);

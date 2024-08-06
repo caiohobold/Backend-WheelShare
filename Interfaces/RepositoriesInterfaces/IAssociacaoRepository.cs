@@ -7,6 +7,7 @@ namespace EmprestimosAPI.Interfaces.RepositoriesInterfaces
     {
         Task<PagedList<Associacao>> GetAllAssocAsync(int pageNumber, int pageSize);
         Task<Associacao> GetAssocById(int id);
+        Task<Associacao> GetAssocByEmailAsync(string email);
         Task<Associacao> AddAssoc(Associacao associacao);
         Task UpdateAssoc(Associacao associacao);
         Task DeleteAssoc(int id);

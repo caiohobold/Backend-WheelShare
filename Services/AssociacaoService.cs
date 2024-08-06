@@ -3,7 +3,9 @@ using EmprestimosAPI.DTO.Associacao;
 using EmprestimosAPI.Interfaces.Account;
 using EmprestimosAPI.Interfaces.RepositoriesInterfaces;
 using EmprestimosAPI.Interfaces.Services;
+using EmprestimosAPI.Interfaces.ServicesInterfaces;
 using EmprestimosAPI.Models;
+using EmprestimosAPI.Repositories;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,12 +17,14 @@ namespace EmprestimosAPI.Services
         private readonly IAssociacaoRepository _repository;
         private readonly DbEmprestimosContext _context;
         private readonly HashingService _hashingService;
+        private readonly IEmailService _emailService;
 
-        public AssociacaoService(IAssociacaoRepository repository, DbEmprestimosContext context, HashingService hashingService)
+        public AssociacaoService(IAssociacaoRepository repository, DbEmprestimosContext context, HashingService hashingService, IEmailService emailService)
         {
             _repository = repository;
             _context = context;
             _hashingService = hashingService;
+            _emailService = emailService;
         }
 
         public async Task<IEnumerable<AssociacaoReadDTO>> GetAllAsync(int pageNumber, int pageSize)
@@ -112,6 +116,46 @@ namespace EmprestimosAPI.Services
                 assoc.Senha = _hashingService.HashAssocPassword(assoc, newPassword);
                 await _repository.UpdateAssoc(assoc);
             }
+        }
+
+        public async Task<bool> ResetPasswordAsync(string email)
+        {
+            var assoc = await _repository.GetAssocByEmailAsync(email);
+            if (assoc == null)
+            {
+                return false;
+            }
+
+            var newPassword = GenerateRandomPassword();
+            assoc.Senha = _hashingService.HashAssocPassword(assoc, newPassword);
+
+            await _repository.UpdateAssoc(assoc);
+
+            await _emailService.SendResetPasswordEmailAsync(assoc.EmailProfissional, newPassword);
+
+            return true;
+        }
+
+        private string GenerateRandomPassword(int length = 8)
+        {
+            const string upperChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const string lowerChars = "abcdefghijklmnopqrstuvwxyz";
+            const string digitChars = "0123456789";
+
+            var random = new Random();
+            var chars = new List<char>();
+            chars.Add(upperChars[random.Next(upperChars.Length)]);
+            chars.Add(lowerChars[random.Next(lowerChars.Length)]);
+            chars.Add(digitChars[random.Next(digitChars.Length)]);
+
+            for (int i = chars.Count; i < length; i++)
+            {
+                var allChars = upperChars + lowerChars + digitChars;
+                chars.Add(allChars[random.Next(allChars.Length)]);
+            }
+
+            // Embaralhar a senha para garantir que a sequência dos caracteres não siga um padrão fixo
+            return new string(chars.OrderBy(c => random.Next()).ToArray());
         }
     }
 }
