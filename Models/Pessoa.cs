@@ -22,7 +22,7 @@ namespace EmprestimosAPI.Models
         [StringLength(100)]
         [EmailAddress]
         [Column("email")]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         [Required]
         [StringLength(20)]
@@ -31,7 +31,7 @@ namespace EmprestimosAPI.Models
 
         [StringLength (600)]
         [Column("descricao")]
-        public string Descricao { get; set; }
+        public string? Descricao { get; set; }
 
         [StringLength (600)]
         [Column("endereco")]
