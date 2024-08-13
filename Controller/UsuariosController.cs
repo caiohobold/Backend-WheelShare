@@ -204,7 +204,6 @@ namespace EmprestimosAPI.Controller
             return NoContent();
         }
 
-        [Authorize(Roles = "Associacao")]
         [HttpPut("{id}/change-password")]
         public async Task<ActionResult> ChangePassword(int id, [FromBody] ChangePasswordDTO changePasswordDTO)
         {
